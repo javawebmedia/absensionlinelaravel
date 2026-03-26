@@ -1,0 +1,24 @@
+RewriteEngine On
+
+# 🔒 Blok akses file .env dan semua dotfiles (.git, .htaccess, dll)
+<FilesMatch "^\.">
+    Require all denied
+</FilesMatch>
+
+# 🔒 Blok akses file environment secara eksplisit
+<Files ".env">
+    Require all denied
+</Files>
+
+# 🔒 Blok file sensitif lain (opsional tapi disarankan)
+<FilesMatch "(composer\.json|composer\.lock|package\.json|package-lock\.json|webpack\.mix\.js)">
+    Require all denied
+</FilesMatch>
+
+# Redirect Trailing Slashes...
+RewriteRule ^(.*)/$ /$1 [L,R=301]
+
+# Handle Front Controller...
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.php/$1 [L]
